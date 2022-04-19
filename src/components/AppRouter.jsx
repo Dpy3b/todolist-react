@@ -21,18 +21,17 @@ const AppRouter = () => {
 		return <Loader/>
 	}
 
-	return (
-		isAuth ?
+	return isAuth ? (
 		<Routes>
-				{privateRoutes.map(route => (
-					<Route
-						key={route.path}
-						element={route.component}
-						path={route.path}
-						/* exact={route.exact} */
-					/>
-				))}
-				{/* <Route
+			{privateRoutes.map(route => (
+				<Route
+					key={route.path}
+					element={route.component}
+					path={route.path}
+					/* exact={route.exact} */
+				/>
+			))}
+			{/* <Route
 					path="/login"
 					element={<Navigate to="/posts" replace={true} />}
 				/> */}
@@ -48,7 +47,7 @@ const AppRouter = () => {
 			{/* 	<Route path="/posts" element={<Navigate to="/login" replace={true} />} /> */}
 			{/* аналог редирект в 6 версии*/}
 		</Routes>
-		:
+	) : (
 		<Routes>
 			{publicRoutes.map(route => (
 				<Route
@@ -58,7 +57,10 @@ const AppRouter = () => {
 					/* exact={route.exact} */
 				/>
 			))}
-			<Route path='*' element={<Navigate to="/login"/>}/>
+			<Route
+				path="/todolist-react-dev/*"
+				element={<Navigate to="/todolist-react-dev/login" />}
+			/>
 			{/* ВЫШЕ ПРАВИЛЬНЫЙ РЕДИРЕКТ ШЕСТОЙ ВЕРСИИ */}
 		</Routes>
 	);

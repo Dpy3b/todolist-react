@@ -6,7 +6,7 @@ import PostForm from '../components/PostForm';
 import PostList from '../components/PostList';
 import MyButton from '../components/UI/button/MyButton';
 //import MyInput from "./components/UI/Input/MyInput";
-import '../styles/App.css';
+import '../styles/App.scss';
 import MySelect from '../components/UI/select/MySelect';
 import MyInput from '../components/UI/Input/MyInput';
 import PostFilter from '../components/PostFilter';

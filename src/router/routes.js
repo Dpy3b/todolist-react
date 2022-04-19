@@ -4,12 +4,12 @@ import PostIdPage from './../pages/PostIdPage';
 import Login from './../pages/Login';
 
 export const privateRoutes = [
-	{ path: '/about', component: <About /> },
-	{ path: '/posts', component: <Posts /> },
-	{ path: 'posts/:id', component: <PostIdPage />},
-	{ path: '*', component: <Posts /> },
+	{ path: '/todolist-react-dev/about', component: <About /> },
+	{ path: '/todolist-react-dev/posts', component: <Posts /> },
+	{ path: '/todolist-react-dev/posts/:id', component: <PostIdPage /> },
+	{ path: '/todolist-react-dev/*', component: <Posts /> },
 ];
 
 export const publicRoutes = [
-	{ path: '/login', component: <Login /> },
+	{ path: '/todolist-react-dev/login', component: <Login /> },
 ];

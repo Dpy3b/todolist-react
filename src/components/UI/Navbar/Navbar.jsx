@@ -13,8 +13,8 @@ const Navbar = () => {
 		<div className="navbar">
 			<MyButton onClick={logout}>Выйти</MyButton>
 			<div className="navbar__links">
-				<NavLink to="/about">О сайте</NavLink>
-				<NavLink to="/posts">Посты</NavLink>
+				<NavLink to="/todolist-react-dev/about">О сайте</NavLink>
+				<NavLink to="/todolist-react-dev/posts">Посты</NavLink>
 			</div>
 		</div>
 	);

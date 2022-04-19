@@ -15,7 +15,7 @@ const PostItem = (props) => {
 				</div>
 				<div className="post__btns">
 					<MyButton
-						onClick={() => router(`/posts/${props.post.id}`)}
+						onClick={() => router(`/todolist-react-dev/posts/${props.post.id}`)}
 					>
 						Открыть
 					</MyButton>
