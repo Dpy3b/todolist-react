@@ -21,7 +21,7 @@ import Pagination from './components/UI/pagination/Pagination'; */
 
 import React from 'react';
 
-import './styles/App.scss';
+import './styles/App.scss'; // импорт стилей
 import Navbar from './components/UI/Navbar/Navbar';
 import AppRouter from './components/AppRouter';
 import {
