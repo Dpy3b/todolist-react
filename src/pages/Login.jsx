@@ -6,11 +6,13 @@ import { useContext } from "react";
 
 
 const Login = () => {
-	const {isAuth, setIsAuth} = useContext(AuthContext)
+	const {isAuth, setIsAuth} = useContext(AuthContext) // состояние для состояния аутентификации
+
+	// функция логина, изменяем в ней состояние аутентификации
 	const login = event => {
-		event.preventDefault()
-		setIsAuth(true)
-		localStorage.setItem('auth', true)
+		event.preventDefault();
+		setIsAuth(true);
+		localStorage.setItem('auth', 'true'); // ключ и значение в localStorage должны быть строками
 	}
   return (
 		<div>

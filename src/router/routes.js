@@ -3,6 +3,7 @@ import About from './../pages/About';
 import PostIdPage from './../pages/PostIdPage';
 import Login from './../pages/Login';
 
+// описываем все необходимые маршруты в массиве как объекты
 export const privateRoutes = [
 	{ path: '/todolist-react-dev/about', component: <About /> },
 	{ path: '/todolist-react-dev/posts', component: <Posts /> },

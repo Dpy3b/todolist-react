@@ -1,18 +1,20 @@
 import { useState } from 'react';
 
+// принимаем аргументом некоторый коллбэек (запрос, после которого крутилку нужно будет показать)
 export const useFetching = callback => {
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false); // состояние для крутилки
+	const [error, setError] = useState(''); // состояние для ошибки
 
-	const fetching = async (...page) => {
+	// принимаем здесь аргументы limit и page
+	const fetching = async (...args) => {
 		try {
-			setIsLoading(true);
-			await callback(...page);
+			setIsLoading(true); // показываем крутилку
+			await callback(...args); // передаем их в коллбек
 		} catch (e) {
-			setError(e.message);
+			setError(e.message); // текст ошибки помещаем в состояние для ошибки, если ошибка была поймана
 		} finally {
-			setIsLoading(false);
+			setIsLoading(false); // скрываем крутилку вне зависимости от того прошла ошибка или нет
 		}
 	};
-	return [fetching, isLoading, error];
-};
+	return [fetching, isLoading, error]; // возвращаем функцию фетчинг, чтобы мы могли вызвать её в нужном месте, возвращаем состояние isLoading и ошибку
+}

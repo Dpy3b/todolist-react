@@ -8,21 +8,22 @@ import {
 	Route,
 	Link,
 	Navigate,
-	Outlet,
 } from 'react-router-dom';
 import PostIdPage from '../pages/PostIdPage';
 import { routes, privateRoutes, publicRoutes } from './../router/routes';
 import { AuthContext } from './../context/index';
 import Loader from './UI/Loader/Loader';
 const AppRouter = () => {
-	const {isAuth, isLoading} = useContext(AuthContext)
+	//const isAuth = false // прокидывать ТАКОЕ через пропсы во все компоненты - невозможно, нам нужен везде доступ к этой переменной
+	const { isAuth, isLoading } = useContext(AuthContext); // useContext - хук для глобального хранилища данных, чтобы избежать бесконечную передачу через пропсы и коллбеки, передаем в него контекст как аргумент, и получаем все поля которые мы передали в value в App.js
 
-	if(isLoading){
-		return <Loader/>
+	if (isLoading) {
+		return <Loader />;
 	}
 
 	return isAuth ? (
 		<Routes>
+			{/* отрисовываем все приватные роуты через массив с объектами */}
 			{privateRoutes.map(route => (
 				<Route
 					key={route.path}
@@ -35,31 +36,23 @@ const AppRouter = () => {
 					path="/login"
 					element={<Navigate to="/posts" replace={true} />}
 				/> */}
-
-			{/* <Route path="/about" element={<About />} />
-			<Route path="/posts" element={<Posts />} />
-			<Route path="posts/:id" element={<PostIdPage />} />
-			<Route path="/error" element={<Error />} /> */}
-			{/* чтобы не городить кучу роутов, динамически подгружаем */}
-
-			{/* <Route path="*" element={<Posts />} /> */}
-			{/* <Route path="/posts/:id/*" element={<Error />} /> */}
-			{/* 	<Route path="/posts" element={<Navigate to="/login" replace={true} />} /> */}
+			{/* <Route path="/posts" element={<Navigate to="/login" replace={true} />} /> */}
 			{/* аналог редирект в 6 версии*/}
 		</Routes>
 	) : (
 		<Routes>
+			{/* отрисовываем все публичные роуты через массив с объектами */}
 			{publicRoutes.map(route => (
 				<Route
 					key={route.path}
 					element={route.component}
 					path={route.path}
-					/* exact={route.exact} */
+					/* exact={route.exact} */ // в 6 роутере exact это легаси которое не нужно
 				/>
 			))}
 			<Route
-				path="/todolist-react-dev/*"
-				element={<Navigate to="/todolist-react-dev/login" />}
+				path='/todolist-react-dev/*'
+				element={<Navigate to='/todolist-react-dev/login' />}
 			/>
 			{/* ВЫШЕ ПРАВИЛЬНЫЙ РЕДИРЕКТ ШЕСТОЙ ВЕРСИИ */}
 		</Routes>
