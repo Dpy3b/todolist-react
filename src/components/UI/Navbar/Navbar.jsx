@@ -6,12 +6,12 @@ import { useContext } from 'react';
 const Navbar = () => {
 	const { isAuth, setIsAuth } = useContext(AuthContext); // состояние для состояния аутентификации
 
-	// функция для лоаута
+	// функция для логаута
 	const logout = () => {
 		setIsAuth(false)
 		localStorage.removeItem('auth')
 	}
-	
+
 	return (
 		<div className="navbar">
 			<MyButton onClick={logout}>Выйти</MyButton>

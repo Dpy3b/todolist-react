@@ -2,8 +2,6 @@ import React from 'react';
 import { getPagesArray, usePagination } from '../../../utils/pages';
 
 const Pagination = ({ totalPages, page, changePage }) => {
-	//let pagesArray = getPagesArray(totalPages); // старая функция без useMemo
-
 	// используем кастомный хук основанный на useMemo чтобы не было лишних перерендеров и пересчетов
 	// получаем массив с кол-вом страниц
 	let pagesArray = usePagination(totalPages);

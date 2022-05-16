@@ -21,39 +21,15 @@ import Pagination from '../components/UI/pagination/Pagination';
 import { useObserver } from './../hooks/useObserver';
 
 function Posts() {
-	const [posts, setPosts] = useState([]);
-
-	//const [isPostLoading, setIsPostLoading] = useState(false); // состояния для преддеактивации надписи "посты не найдены"
-	// нам оно не нужно т.к. мы реализовали всё что хотели в хуке useFetching
-
-	// изначальный вариант функции для получения постов через axios и через крутилку
-	// тут чутка написан бред, но опять же, мы уже всё реализовали в useFetching
-	/*
-	async function fetchPosts() {
-		setIsPostLoading(true);
-		тут типа фетчим посты
-		setIsPostLoading(false);
-	}
-	*/
-
-	// это я делал для демонстрации неуправляемого инпута (второго) в PostForm
-	/* const bodyInputRef = useRef(); */
-
-	// вот эти два состояния в результате декомпозиции в PostFilter можно спокойно удалять, мы заменили их состоянием [filter, setFilter] ниже
-	//const [searchQuery, setSearchQuery] = useState('');
-	//const [selectedSort, setSelectedSort] = useState('');
-
+	const [posts, setPosts] = useState([]); // состояние для всех постов которые изначально подгружаем с фейк сервера
 	const [filter, setFilter] = useState({ sort: '', query: '' }); // отвечает за логику работы сортировки
 	const [modal, setModal] = useState(false); // состояние для управления видимостью модального окна
 	const [totalPages, setTotalPages] = useState(0); // состояние для общего кол-ва подгружаемых постов
 	const [limit, setLimit] = useState(10); // состояние для лимита постов на страницу
 	const [page, setPage] = useState(1); // состояние для текущей страницы
-
 	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query); // используем кастомный хук для поиска уже отсортированных постов
-
 	const lastElement = useRef(); // для получения ссылки на дом-элемент, находящимся последним в списке на странице
 
-	// переписать это с помощью useMemo чтобы не было перерендера, добавить хук юзПагинейшн самому
 	// нам этот кастомный хук по итогу возвращает массив из 3х элементов которыми мы можем управлять как хотим где угодно
 	const [fetchPosts, isPostsLoading, postError] = useFetching(
 		// принимаем в саму функцию для получения постов limit и page, это второй вариант решения проблемы, уже без useEffect
@@ -92,42 +68,10 @@ function Posts() {
 	//функция для изменения страницы по её номеру, аргументом передаем номер страницы на которую нажал пользователь
 	const changePage = page => {
 		setPage(page);
-		//fetchPosts() // т.к. функция fetchPosts использует в себе состояние, то если вызвать её здесь, то т.к. изменение состояния это асинхронный процесс - то вверху page будет попадать в запрос с некоторым отставанием
-		// ещё как вариант это сделать без юзэффекта, вызываем тут тогда fetchPosts(limit, page)
 	};
-
-	// это я делал для поиска, всё это ниже мы по сути перенесли в результате декомпозиции в кастомный хук usePosts.js
-
-	//функция ниже нам уже не нужна, мы перенесли её логику в sortedPosts
-	/*
-	function getSortedPosts() {
-		if (selectedSort) {
-			return [...posts].sort((a, b) =>
-				a[selectedSort].localCompare(b[selectedSort])
-			);
-		}
-	}
-
-	const sortedPosts = useMemo(() => {
-		if (sort) {
-			return [...posts].sort((a, b) => a[sort].localeCompare(b[sort]));
-		}
-		return posts;
-	}, [selectedSort, posts]);
-	*/
-
-	// ниже мы всё это заменили на более совершенные алгоритмы
-	//const [selectedSort, setSelectedSort] = useState(''); // создали состояние для двустороннего связывания для фильтрации у селекта
-	/*
-	const sortPosts = sort => {
-		setSelectedSort(sort);
-		setPosts([...posts].sort((a, b) => a[sort].localCompare(b[sort]))
-	};
-	*/
 
 	return (
 		<div className='App'>
-			{/* <button onClick={fetchPosts}>get posts</button> */}
 			<MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
 				Создать пост
 			</MyButton>
@@ -140,7 +84,7 @@ function Posts() {
 			{/* передаем пропсами состояние, и функцию которая его изменяет в наш компонент */}
 			<PostFilter filter={filter} setFilter={setFilter} />
 			<MySelect
-				// здесб limit это кол-во выводимых постов на странице
+				// здесь limit это кол-во выводимых постов на странице
 				value={limit}
 				onChange={value => setLimit(value)}
 				defaultValue='Кол-во элементов на странице'
@@ -151,27 +95,19 @@ function Posts() {
 					{ value: -1, name: 'Показать всё' }, // получаем все посты если value -1
 				]}
 			/>
-			{postError && (
-				<h4 style={{ textAlign: 'center' }}>Произошла ошибка ${postError}</h4>
-			)}
-			<PostList
-				remove={removePost}
-				posts={sortedAndSearchedPosts}
-				title='Посты про JS'
-			/>
+			{postError && <h4 style={{ textAlign: 'center' }}>Произошла ошибка ${postError}</h4>}
+			<PostList remove={removePost} posts={sortedAndSearchedPosts} title='Посты про JS' />
 			<div
 				/* условно последний элемент это тупа эта полоска */
 				ref={lastElement}
 				style={{ height: 20, backgroundColor: 'coral' }}
 			></div>
 			{isPostsLoading && (
-				<div
-					style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
-				>
+				<div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
 					<Loader />
 				</div>
 			)}
-			{/* пропс page здесь - номер страницыс постами, остальное очевидно */}
+			{/* пропс page здесь - номер страницы постами, остальное очевидно */}
 			<Pagination page={page} changePage={changePage} totalPages={totalPages} />
 		</div>
 	);

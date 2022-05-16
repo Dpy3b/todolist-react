@@ -2,19 +2,13 @@ import React, { useContext } from 'react';
 import About from '../pages/About';
 import Posts from '../pages/Posts';
 import Error from '../pages/Error';
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Link,
-	Navigate,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import PostIdPage from '../pages/PostIdPage';
 import { routes, privateRoutes, publicRoutes } from './../router/routes';
 import { AuthContext } from './../context/index';
 import Loader from './UI/Loader/Loader';
+
 const AppRouter = () => {
-	//const isAuth = false // прокидывать ТАКОЕ через пропсы во все компоненты - невозможно, нам нужен везде доступ к этой переменной
 	const { isAuth, isLoading } = useContext(AuthContext); // useContext - хук для глобального хранилища данных, чтобы избежать бесконечную передачу через пропсы и коллбеки, передаем в него контекст как аргумент, и получаем все поля которые мы передали в value в App.js
 
 	if (isLoading) {
@@ -25,17 +19,16 @@ const AppRouter = () => {
 		<Routes>
 			{/* отрисовываем все приватные роуты через массив с объектами */}
 			{privateRoutes.map(route => (
-				<Route
-					key={route.path}
-					element={route.component}
-					path={route.path}
-					/* exact={route.exact} */
-				/>
+				<Route key={route.path} element={route.component} path={route.path} />
 			))}
-			{/* <Route
-					path="/login"
-					element={<Navigate to="/posts" replace={true} />}
-				/> */}
+			<Route
+				path='/todolist-react-dev/login'
+				element={<Navigate to='/todolist-react-dev/posts' />}
+			/>
+			<Route
+				path='/todolist-react-dev/*'
+				element={<Navigate to='/todolist-react-dev/error' />}
+			/>
 			{/* <Route path="/posts" element={<Navigate to="/login" replace={true} />} /> */}
 			{/* аналог редирект в 6 версии*/}
 		</Routes>
